@@ -5,7 +5,7 @@ pub mod state;
 
 use instructions::*;
 
-declare_id!("8Rjuijp2QPMjpNfeuWpe7qKfhwTdLS5ddd7mMa994KWA");
+declare_id!("DJPman6YhQpGAFp3PkLXjqcf6fXrdVrwmrjve7odk8j");
 
 #[program]
 pub mod biller {

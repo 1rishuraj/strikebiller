@@ -6,7 +6,7 @@ resolution = true
 skip-lint = false
 
 [programs.devnet]
-biller = "8Rjuijp2QPMjpNfeuWpe7qKfhwTdLS5ddd7mMa994KWA"
+biller = "DJPman6YhQpGAFp3PkLXjqcf6fXrdVrwmrjve7odk8j"
 
 [registry]
 url = "https://api.apr.dev"

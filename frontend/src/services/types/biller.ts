@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/biller.json`.
  */
 export type Biller = {
-  "address": "8Rjuijp2QPMjpNfeuWpe7qKfhwTdLS5ddd7mMa994KWA",
+  "address": "DJPman6YhQpGAFp3PkLXjqcf6fXrdVrwmrjve7odk8j",
   "metadata": {
     "name": "biller",
     "version": "0.1.0",
