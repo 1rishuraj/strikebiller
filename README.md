@@ -74,14 +74,25 @@ StrikeBiller reframes Solana as a **distributed, lazy state-machine backend**.
 
 ## 📂 Repository Structure
 This monorepo contains the complete lifecycle of the billing engine:
-* `/programs` - The Anchor Rust smart contract (Backend State Machine).
-* `/frontend` - The Next.js Web3 client (Deployed on Vercel).
-* `/cranker` - The Node.js daemon worker for processing lazy execution.
+
+```text
+strikebiller/
+├── programs/biller/       # Anchor Rust smart contract (Backend State Machine)
+│   ├── src/instructions/  # Core logic (init_plan, subscribe, toggle, cancel)
+│   ├── src/state/         # PDA structures (Subscription, SubscriptionPlan)
+│   └── tests/biller.ts    # E2E Escrow and state transition tests
+├── frontend/              # Next.js Web3 client (Deployed on Vercel)
+│   └── src/
+│       ├── components/    # UI components (FundVaultModal, BillerHero)
+│       └── services/      # Blockchain interaction logic & IDL parsing
+└── cranker/               # Node.js daemon worker for lazy execution
+    └── src/index.ts       # Off-chain bot querying and billing due subscriptions
+```
 
 ### How to Test Locally
-1. **Frontend:** Navigate to `/frontend` -> `npm install` -> `npm run dev`.
-2. **Cranker Bot:** Navigate to `/cranker` -> `npm install` -> `npx ts-node src/index.ts`.
-3. **Rust Tests:** Navigate to `/programs` -> run `anchor test` to verify all escrow constraints and state transitions.
+1. **Rust Tests:** Navigate to `/programs` -> run `anchor test` to verify all escrow constraints and state transitions.
+2. **Frontend:** Navigate to `/frontend` -> `npm install` -> `npm run dev`.
+3. **Cranker Bot:** Navigate to `/cranker` -> `npm install` -> `npx ts-node src/index.ts`. 
 
 *(Note: The live frontend requires Devnet USDC. Mint: `Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr`)*
 
