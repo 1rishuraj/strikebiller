@@ -14,6 +14,42 @@
 
 ## 🏛 Architecture Analysis: Web2 Backends vs. Solana State Machines
 
+### Visual Architecture & Account Model
+
+```mermaid
+graph TD
+    subgraph Off-Chain Actors
+        Merchant([Merchant Wallet])
+        Subscriber([Subscriber Wallet])
+        Cranker[[Cranker Bot / Node.js]]
+    end
+
+    subgraph StrikeBiller Anchor Program
+        PlanPDA[SubscriptionPlan PDA<br/>Seeds: 'plan', Merchant, PlanID]
+        SubPDA[Subscription PDA<br/>Seeds: 'subscription', Subscriber, PlanPDA]
+    end
+
+    subgraph Token Accounts Escrow
+        SubATA[(Subscriber USDC ATA)]
+        VaultATA[(Vault USDC ATA<br/>Owner: Subscription PDA)]
+        MerchATA[(Merchant USDC ATA)]
+    end
+
+    %% Initialization & Subscription
+    Merchant -->|1. initialize_plan| PlanPDA
+    Subscriber -->|2. subscribe| SubPDA
+    SubATA -.->|Locks upfront USDC| VaultATA
+
+    %% Execution
+    Cranker -->|3. process_billing| SubPDA
+    SubPDA -->|Validates Clock::get & Rules| VaultATA
+    VaultATA -.->|Transfers if due| MerchATA
+    
+    %% Cancellation
+    Subscriber -->|4. cancel_subscription| SubPDA
+    VaultATA -.->|Refunds unbilled USDC| SubATA
+```
+
 ### 1. How Subscription Billing Works in Web2
 In a traditional SaaS architecture (e.g., Node.js + PostgreSQL + Stripe):
 * **State Storage:** User status (`is_active`, `next_billing_date`) is stored in a centralized database row.
